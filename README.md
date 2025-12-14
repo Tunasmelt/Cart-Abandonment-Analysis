@@ -22,11 +22,11 @@ The eCommerce business is experiencing a high rate of cart abandonment, with man
 
 The project uses a star schema database with the following tables:
 
-- **fact_table.csv**: Contains transaction-level data including session_id, customer_id, product_id, device_id, date_id, quantity, and abandonment_time
-- **customer_table.csv**: Customer demographics including customer_id, name, age, gender, and city
-- **date_table.csv**: Date dimension with date_id and date information
-- **device_table.csv**: Device information including device_id, device_type, and operating system
-- **product_table.csv**: Product details including product_id, name, category, and price
+- **fact_table.csv**: Contains 5000 transaction-level records including session_id, customer_id, product_id, device_id, date_id, quantity, and abandonment_time
+- **customer_table.csv**: 1000 customers with demographics including customer_id, name, age, gender, and city (cities: London, New York, Sydney, Berlin, Mumbai)
+- **date_table.csv**: Date dimension with 366 dates from 2023-01-01 to 2024-01-01
+- **device_table.csv**: 5 device types including Tablet (iOS), Desktop (iOS), Mobile (Windows), Mobile (Android), Tablet (iOS)
+- **product_table.csv**: 25 products across 5 categories (Electronics, Apparel, Home & Kitchen, Beauty & Personal Care, Sports & Outdoors) with product_id, name, category, and price
 
 ## Methodology
 
@@ -46,7 +46,7 @@ The project uses a star schema database with the following tables:
 
 ```
 Cart Abandonment/
-├── data-processing.ipynb          # Data loading and preprocessing notebook
+├── data_processing.ipynb          # Data loading and preprocessing notebook
 ├── demograpic-info.ipynb          # Demographic analysis notebook
 ├── Cart Abandonment Datasets/     # Data files
 │   ├── fact_table.csv
