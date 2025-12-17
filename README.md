@@ -47,7 +47,7 @@ The project uses a star schema database with the following tables:
 ```
 Cart Abandonment/
 ├── data_processing.ipynb          # Data loading and preprocessing notebook
-├── demograpic-info.ipynb          # Demographic analysis notebook
+├── demographic-info.ipynb          # Demographic analysis notebook
 ├── Cart Abandonment Datasets/     # Data files
 │   ├── fact_table.csv
 │   ├── customer_table.csv
