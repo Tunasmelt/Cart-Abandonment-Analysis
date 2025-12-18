@@ -20,13 +20,16 @@ The eCommerce business is experiencing a high rate of cart abandonment, with man
 
 ## Data Sources
 
-The project uses a star schema database with the following tables:
+### Raw tables (Cart Abandonment Datasets/)
+- **fact_table.csv**: 5,000 session-level rows with `session_id`, `customer_id`, `product_id`, `device_id`, `date_id`, `quantity` (note the trailing space in the header), `abandonment_time` (date), and `time_of_set` (synthetic HH:MM:SS times filled only when an abandonment date exists; blank otherwise).
+- **customer_table.csv**: 1,000 customers with demographics (`customer_id`, `customer_name`, `age`, `gender`, `city` across London, New York, Sydney, Berlin, Mumbai).
+- **date_table.csv**: 366 daily rows from 2023-01-01 to 2024-01-01.
+- **device_table.csv**: 5 device types with associated OS details.
+- **product_table.csv**: 25 products across five categories with `product_id`, `product_name`, `category`, and `price`.
 
-- **fact_table.csv**: 5,000 session-level rows with `session_id`, `customer_id`, `product_id`, `device_id`, `date_id`, `quantity` (in the raw file the header contains a trailing space), `abandonment_time` (date), and `time_of_set` (synthetic HH:MM:SS times added for rows that have an abandonment date; remains blank when no abandonment date exists)
-- **customer_table.csv**: 1,000 customers with demographics (`customer_id`, `customer_name`, `age`, `gender`, `city` across London, New York, Sydney, Berlin, Mumbai)
-- **date_table.csv**: 366 daily rows from 2023-01-01 to 2024-01-01
-- **device_table.csv**: 5 device types with device and OS details
-- **product_table.csv**: 25 products across five categories with `product_id`, `product_name`, `category`, and `price`
+### Derived outputs
+- **Cleaned_Datasets/**: CSV exports from `data_processing.ipynb` with cleaned types and engineered fields (e.g., `is_abandoned` in the cleaned fact table).
+- **variables.pkl**: Pickled DataFrames (customer, date, facts, product, device) for quick loading in downstream notebooks.
 
 ## Methodology
 
@@ -47,26 +50,22 @@ The project uses a star schema database with the following tables:
 
 ```
 Cart Abandonment/
-├── data_processing.ipynb       # Data loading, cleaning, flagging, exports
-├── demograph.ipynb             # Demographic and session-level exploration
-├── demograph.sql               # SQL reference/queries
-├── Cart Abandonment Datasets/  # Raw data
-│   ├── fact_table.csv
-│   ├── customer_table.csv
-│   ├── date_table.csv
-│   ├── device_table.csv
-│   └── product_table.csv
-├── Cleaned_Datasets/           # Exported cleaned CSVs
-├── variables.pkl               # Pickled cleaned DataFrames for reuse
-└── README.md                   # This file
+├── data_processing.ipynb       # Load, clean, validate, engineer fields, export cleaned CSVs and variables.pkl
+├── demograph.ipynb             # Exploratory analysis using preprocessed data
+├── demograph.sql               # SQL reference/queries for the schema
+├── Cart Abandonment Datasets/  # Raw inputs (fact_table, dimensions)
+├── Cleaned_Datasets/           # Outputs from data_processing.ipynb
+├── variables.pkl               # Pickled cleaned DataFrames for fast reuse
+└── README.md                   # Project overview and guidance
 ```
 
 ## Technologies Used
 
-- **Python**: Primary programming language
-- **Pandas**: Data manipulation and analysis
-- **NumPy**: Numerical computing
-- **Jupyter Notebook**: Interactive development environment
+- **Python 3.12**: Core language for data prep and analysis
+- **Pandas / NumPy**: Data wrangling and numerical operations
+- **Jupyter Notebook**: Interactive execution and documentation
+- **pickle**: Persisting processed DataFrames for reuse (`variables.pkl`)
+- **OS utilities**: File-system orchestration for cleaned exports
 
 ## Key Findings
 
