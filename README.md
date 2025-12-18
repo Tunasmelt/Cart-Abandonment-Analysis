@@ -22,19 +22,20 @@ The eCommerce business is experiencing a high rate of cart abandonment, with man
 
 The project uses a star schema database with the following tables:
 
-- **fact_table.csv**: Contains 5000 transaction-level records including session_id, customer_id, product_id, device_id, date_id, quantity, and abandonment_time
-- **customer_table.csv**: 1000 customers with demographics including customer_id, name, age, gender, and city (cities: London, New York, Sydney, Berlin, Mumbai)
-- **date_table.csv**: Date dimension with 366 dates from 2023-01-01 to 2024-01-01
-- **device_table.csv**: 5 device types including Tablet (iOS), Desktop (iOS), Mobile (Windows), Mobile (Android), Tablet (iOS)
-- **product_table.csv**: 25 products across 5 categories (Electronics, Apparel, Home & Kitchen, Beauty & Personal Care, Sports & Outdoors) with product_id, name, category, and price
+- **fact_table.csv**: 5,000 session-level rows with `session_id`, `customer_id`, `product_id`, `device_id`, `date_id`, `quantity` (in the raw file the header contains a trailing space), `abandonment_time` (date), and `time_of_set` (synthetic HH:MM:SS times added for rows that have an abandonment date; remains blank when no abandonment date exists)
+- **customer_table.csv**: 1,000 customers with demographics (`customer_id`, `customer_name`, `age`, `gender`, `city` across London, New York, Sydney, Berlin, Mumbai)
+- **date_table.csv**: 366 daily rows from 2023-01-01 to 2024-01-01
+- **device_table.csv**: 5 device types with device and OS details
+- **product_table.csv**: 25 products across five categories with `product_id`, `product_name`, `category`, and `price`
 
 ## Methodology
 
 ### Data Processing
 1. **Data Loading**: Import all CSV files into pandas DataFrames
-2. **Data Cleaning**: Handle missing values and data type conversions
-3. **Data Validation**: Check for null values and ensure data integrity
-4. **Data Type Setting**: Convert columns to appropriate data types (integers, strings, datetimes)
+2. **Data Cleaning**: Handle missing values and set consistent dtypes (ints, strings, datetimes)
+3. **Data Validation**: Null audits and ID consistency checks across dimension tables
+4. **Feature Engineering**: Add `is_abandoned` flag from presence of `abandon_date`; enrich `abandonment_time` with `time_of_set` (blank when no abandonment date)
+5. **Exports**: Persist cleaned CSVs to `Cleaned_Datasets/` and bundle processed DataFrames into `variables.pkl` for downstream notebooks
 
 ### Analysis Approach
 - **Exploratory Data Analysis**: Examine data distributions and relationships
@@ -46,15 +47,18 @@ The project uses a star schema database with the following tables:
 
 ```
 Cart Abandonment/
-├── data_processing.ipynb          # Data loading and preprocessing notebook
-├── demographic-info.ipynb          # Demographic analysis notebook
-├── Cart Abandonment Datasets/     # Data files
+├── data_processing.ipynb       # Data loading, cleaning, flagging, exports
+├── demograph.ipynb             # Demographic and session-level exploration
+├── demograph.sql               # SQL reference/queries
+├── Cart Abandonment Datasets/  # Raw data
 │   ├── fact_table.csv
 │   ├── customer_table.csv
 │   ├── date_table.csv
 │   ├── device_table.csv
 │   └── product_table.csv
-└── README.md                      # This file
+├── Cleaned_Datasets/           # Exported cleaned CSVs
+├── variables.pkl               # Pickled cleaned DataFrames for reuse
+└── README.md                   # This file
 ```
 
 ## Technologies Used
@@ -66,18 +70,12 @@ Cart Abandonment/
 
 ## Key Findings
 
-*(To be updated based on analysis results)*
+*To be updated after running the analysis notebooks.*
 
-### Device-Specific Insights
-- Analysis of abandonment rates by device type
+## Quick Start
 
-### Product-Specific Insights
-- Identification of high-abandonment product categories
-- Analysis of frequently abandoned products
-
-### Time-Specific Insights
-- Temporal patterns in cart abandonment
-- Peak abandonment periods
+1. Open `data_processing.ipynb` and run all cells to load, clean, flag `is_abandoned`, and export cleaned CSVs plus `variables.pkl`.
+2. Use `demograph.ipynb` for exploratory analysis and time/device/product breakdowns (it loads `variables.pkl` to skip reprocessing).
 
 ## Future Work
 
