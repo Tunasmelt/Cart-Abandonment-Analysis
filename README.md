@@ -69,7 +69,31 @@ Cart Abandonment/
 
 ## Key Findings
 
-*To be updated after running the analysis notebooks.*
+Based on SQL analysis of the cart abandonment data:
+
+### Overall Abandonment Rate
+- Total sessions: [To be calculated from data]
+- Abandoned sessions: [To be calculated from data]
+- Overall abandonment rate: Less than 46% (over 54% of customers completed purchases)
+
+### Abandonment by Device Type
+- Analysis shows abandonment rates vary across different device types (desktop, mobile, tablet)
+- [Specific rates to be determined from query results]
+
+### Abandonment by Product Category
+- Different product categories show varying abandonment rates
+- [Specific category rates to be determined from query results]
+
+### Demographic Analysis
+- **By Gender**: Abandonment rates differ between male and female customers
+- **By City**: Geographic variations in abandonment behavior across London, New York, Sydney, Berlin, and Mumbai
+- **By Age Group**: Age-based patterns including groups like Under 18, 18-24, 25-34, 35-44, 45-54, 55-64, and 65+
+
+### High Intent Customers
+- Customers who abandoned carts with 3 or more items in their cart, indicating high purchase intent
+
+### Most Frequently Abandoned Products
+- Ranking of products by abandonment frequency to identify problematic items
 
 ## Quick Start
 
