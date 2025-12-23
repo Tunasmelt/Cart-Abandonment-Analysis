@@ -12,9 +12,9 @@ The eCommerce business is experiencing a high rate of cart abandonment, with man
 
 ## Business Questions to Answer
 
-1. **Device-Specific Abandonment**: What are the cart abandonment rates across different devices (desktop, mobile, tablet)?
+1. **Device-Specific Abandonment**: What are the cart abandonment rates across different devices (desktop, mobile, tablet)? *(Addressed in demograph.sql with device type abandonment rate queries)*
 
-2. **Product-Specific Abandonment**: Which product categories experience the highest rates of abandonment? Are there certain products that are frequently abandoned?
+2. **Product-Specific Abandonment**: Which product categories experience the highest rates of abandonment? Are there certain products that are frequently abandoned? *(Addressed in demograph.sql with product category and most abandoned products queries)*
 
 3. **Time-Specific Trends**: Are there specific times of the day, days of the week, or months where cart abandonment spikes? What seasonal trends exist?
 
@@ -37,10 +37,11 @@ The eCommerce business is experiencing a high rate of cart abandonment, with man
 1. **Data Loading**: Import all CSV files into pandas DataFrames
 2. **Data Cleaning**: Handle missing values and set consistent dtypes (ints, strings, datetimes)
 3. **Data Validation**: Null audits and ID consistency checks across dimension tables
-4. **Feature Engineering**: Add `is_abandoned` flag from presence of `abandon_date`; enrich `abandonment_time` with `time_of_set` (blank when no abandonment date)
+4. **Feature Engineering**: Add `is_abandoned` flag based on presence of `abandonment_time` (1 if abandoned, 0 if completed); `time_of_set` contains synthetic timestamps when abandonment occurred
 5. **Exports**: Persist cleaned CSVs to `Cleaned_Datasets/` and bundle processed DataFrames into `variables.pkl` for downstream notebooks
 
 ### Analysis Approach
+- **SQL Analysis**: Execute queries in `demograph.sql` to calculate abandonment rates by device, product category, demographics (gender, city, age), and identify high-intent customers and frequently abandoned products
 - **Exploratory Data Analysis**: Examine data distributions and relationships
 - **Aggregation**: Group data by relevant dimensions (device, product category, time periods)
 - **Statistical Analysis**: Calculate abandonment rates and identify patterns
@@ -52,7 +53,7 @@ The eCommerce business is experiencing a high rate of cart abandonment, with man
 Cart Abandonment/
 ├── data_processing.ipynb       # Load, clean, validate, engineer fields, export cleaned CSVs and variables.pkl
 ├── demograph.ipynb             # Exploratory analysis using preprocessed data
-├── demograph.sql               # SQL reference/queries for the schema
+├── demograph.sql               # SQL queries for cart abandonment analysis including demographic breakdowns, device/product analysis, and abandonment rate calculations
 ├── Cart Abandonment Datasets/  # Raw inputs (fact_table, dimensions)
 ├── Cleaned_Datasets/           # Outputs from data_processing.ipynb
 ├── variables.pkl               # Pickled cleaned DataFrames for fast reuse
@@ -64,6 +65,7 @@ Cart Abandonment/
 - **Python 3.12**: Core language for data prep and analysis
 - **Pandas / NumPy**: Data wrangling and numerical operations
 - **Jupyter Notebook**: Interactive execution and documentation
+- **SQL**: Database querying for abandonment analysis (queries in `demograph.sql`)
 - **pickle**: Persisting processed DataFrames for reuse (`variables.pkl`)
 - **OS utilities**: File-system orchestration for cleaned exports
 
@@ -72,33 +74,55 @@ Cart Abandonment/
 Based on SQL analysis of the cart abandonment data:
 
 ### Overall Abandonment Rate
-- Total sessions: [To be calculated from data]
-- Abandoned sessions: [To be calculated from data]
-- Overall abandonment rate: Less than 46% (over 54% of customers completed purchases)
+- Total sessions: 5,000
+- Abandoned sessions: 2,524
+- Overall abandonment rate: 50.48%
 
 ### Abandonment by Device Type
-- Analysis shows abandonment rates vary across different device types (desktop, mobile, tablet)
-- [Specific rates to be determined from query results]
+- Desktop: 49.95% abandonment rate (1,021 total sessions)
+- Mobile: 50.82% abandonment rate (1,960 total sessions)
+- Tablet: 50.42% abandonment rate (2,019 total sessions)
 
 ### Abandonment by Product Category
-- Different product categories show varying abandonment rates
-- [Specific category rates to be determined from query results]
+- Apparel: 52.50% abandonment rate (highest)
+- Electronics: 51.83% abandonment rate
+- Sports & Outdoors: 49.65% abandonment rate
+- Beauty & Personal Care: 49.40% abandonment rate
+- Home & Kitchen: 48.87% abandonment rate (lowest)
 
 ### Demographic Analysis
-- **By Gender**: Abandonment rates differ between male and female customers
-- **By City**: Geographic variations in abandonment behavior across London, New York, Sydney, Berlin, and Mumbai
-- **By Age Group**: Age-based patterns including groups like Under 18, 18-24, 25-34, 35-44, 45-54, 55-64, and 65+
+- **By Gender**:
+  - Female: 50.60% abandonment rate (2,508 sessions)
+  - Male: 50.36% abandonment rate (2,492 sessions)
+- **By City**:
+  - Berlin: 52.91% abandonment rate (highest)
+  - London: 52.15% abandonment rate
+  - Mumbai: 50.61% abandonment rate
+  - Sydney: 49.48% abandonment rate
+  - New York: 47.49% abandonment rate (lowest)
+- **By Age Group**:
+  - 18-24: 47.10% abandonment rate (lowest)
+  - 25-34: 51.29% abandonment rate
+  - 35-44: 50.64% abandonment rate
+  - 45-54: 51.58% abandonment rate (highest)
+  - 55-64: 51.10% abandonment rate
 
 ### High Intent Customers
-- Customers who abandoned carts with 3 or more items in their cart, indicating high purchase intent
+- 1,508 customers abandoned carts with 3 or more items, indicating high purchase intent
 
 ### Most Frequently Abandoned Products
-- Ranking of products by abandonment frequency to identify problematic items
+- Top 5 most abandoned products:
+  1. Dress (118 abandonments)
+  2. Headphones (118 abandonments)
+  3. Blender (115 abandonments)
+  4. Smartphone (113 abandonments)
+  5. Smartwatch (112 abandonments)
 
 ## Quick Start
 
 1. Open `data_processing.ipynb` and run all cells to load, clean, flag `is_abandoned`, and export cleaned CSVs plus `variables.pkl`.
-2. Use `demograph.ipynb` for exploratory analysis and time/device/product breakdowns (it loads `variables.pkl` to skip reprocessing).
+2. Review `demograph.sql` for SQL-based abandonment analysis queries covering device types, product categories, demographics, and high-intent customers.
+3. Use `demograph.ipynb` for exploratory analysis and time/device/product breakdowns (it loads `variables.pkl` to skip reprocessing).
 
 ## Future Work
 
